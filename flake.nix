@@ -23,7 +23,7 @@
         system = "x86_64-linux";
 	specialArgs = { inherit inputs; };
         modules = [
-          ./hosts/tp-phobos
+          ./hosts/phobos
 
           # make home-manager as a module of nixos
           # so that home-manager configuration will be deployed automatically when executing `nixos-rebuild switch`
