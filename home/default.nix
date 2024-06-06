@@ -155,6 +155,12 @@
       urlencode = "python3 -c 'import sys, urllib.parse as ul; print(ul.quote_plus(sys.stdin.read()))'";
     };
   };
+  
+  # dconf from home-manager.users.mm to set the dark theme preference for gnome
+  dconf = {
+    enable = true;
+    settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";
+  };
 
   # This value determines the home Manager release that your
   # configuration is compatible with. This helps avoid breakage
