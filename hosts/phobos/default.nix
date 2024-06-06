@@ -6,16 +6,20 @@
 
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [ 
+      ../../modules/system.nix
+      
+      # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
 
-  # Bootloader.
+  # Bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
   boot.initrd.luks.devices."luks-4e6332d5-313d-494a-a0e0-825787ea2259".device = "/dev/disk/by-uuid/4e6332d5-313d-494a-a0e0-825787ea2259";
-  networking.hostName = "phobos"; # Define your hostname.
+  networking.hostName = "phobos";
+
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -24,28 +28,6 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
-
-  # Set your time zone.
-  time.timeZone = "Europe/Zurich";
-
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-
-  # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
-
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "";
-  };
-
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
 
   # Enable sound with pipewire.
   hardware.pulseaudio.enable = false;
@@ -66,35 +48,18 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.mm = {
-    isNormalUser = true;
-    description = "Miquel Marin";
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-    #  thunderbird
-    ];
-  };
-
-  # Install firefox.
-  programs.firefox.enable = true;
-
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
    wget
    curl
    neovim
    git  
+   firefox
 
    inputs.helix.packages."${pkgs.system}".helix
   ];
   
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
   environment.variables.EDITOR = "nvim";
 
   # Some programs need SUID wrappers, can be configured further or are
