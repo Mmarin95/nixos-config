@@ -23,6 +23,7 @@
   services.xserver.xkb = {
     layout = "us";
     variant = "";
+    options = "caps:ctrl_modifier";
   };
 
   ## NIX
