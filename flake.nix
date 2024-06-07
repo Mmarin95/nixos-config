@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     helix.url = "github:helix-editor/helix/master";
 
@@ -17,11 +18,26 @@
 
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, ... }: {
+  outputs = inputs@{ 
+    nixpkgs, 
+    nixpkgs-unstable,
+    home-manager, 
+    ... 
+    }: {
     nixosConfigurations = {
-      phobos = nixpkgs.lib.nixosSystem {
+      phobos = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
-        specialArgs = { inherit inputs; };
+        specialArgs = { 
+          # Inputs so I can access them in the modules (used for helix installation example)
+          inherit inputs; 
+          
+          # unestable branch to install more recent packages
+          pkgs-unstable = import nixpkgs-unstable {
+            inherit system;
+            config.allowUnfree = true;
+          };
+
+        };
         modules = [
           ./hosts/phobos
 

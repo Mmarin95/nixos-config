@@ -2,8 +2,26 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, pkgs-unstable, inputs, ... }:
 
+let
+  packages = with pkgs; [
+    # Add packages you want to install here.
+    # To search for a package, run:
+    # $ nix search wget
+    wget
+    curl
+    # neovim
+    git
+    firefox
+
+    inputs.helix.packages."${pkgs.system}".helix
+  ];
+  unstable-packages = with pkgs-unstable; [
+    # Add packages from unstable channel here.
+    neovim
+  ];
+in
 {
   imports =
     [ 
@@ -33,15 +51,7 @@
   # TODO: Move packages to system.nix, how to pass the inputs?
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
-   wget
-   curl
-   neovim
-   git  
-   firefox
-
-   inputs.helix.packages."${pkgs.system}".helix
-  ];
+  environment.systemPackages = packages ++ unstable-packages;
   
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
